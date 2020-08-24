@@ -1,0 +1,18 @@
+<div class="row">
+</div>
+<div class="col-xs-12" style="padding-top: 10px;">
+  <div *ngFor="let img of images; let i=index"  >
+    <a (click)="onSelect(i)"
+    style = 'cursor: pointer'
+    class="list-group-item clearfix"
+    >
+        <div class="pull-left" style="text-align: left;">
+            <h4 class="list-group-item-heading">{{img.title}}</h4>
+        </div>
+            <span class="pull-right"> <img src="{{img.thumbnailUrl}}" alt="" class="image-responsive"
+                style = "max-height: 50px;" > </span>
+         </a>
+  </div>
+  <hr>
+<button class="btn btn-primary" (click)="load()">Load more</button>
+</div>

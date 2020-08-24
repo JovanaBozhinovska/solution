@@ -1,0 +1,18 @@
+<div *ngIf="selected">
+<div class="row" >
+  <div class="col-xs-12">
+    <p>
+    {{selectedImage.title}}
+  </p>
+  </div>
+  <div class="col-xs-12" style="padding-top: 1px;" >
+      <img src="{{selectedImage.url}}" alt="">
+  </div>
+</div>
+<div class="row">
+  <div class="btn-group col-xs-12" role="group" aria-label="Basic example" style="padding-top: 10px;">
+    <button type="button" class="btn btn-primary" (click)="onEdit()">Edit Image</button>
+    <button type="button" class="btn btn-secondary" (click)="onDelete()"> Delete Image </button>
+  </div>
+</div>
+</div>
