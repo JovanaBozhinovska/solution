@@ -1,13 +1,18 @@
 <div class="row">
   <div class="col-xs-7" style="position: fixed;">
+    <div class="alert alert-danger" *ngIf="error"> {{error}} </div>
     <form  [formGroup]="form" (ngSubmit)="onSave()" >
-
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
             <label for="name"> Title </label>
             <input type="text" class="form-control" formControlName="title" >
+            <span class="text-danger"
+          *ngIf="formControl.title.touched && formControl.title.errors?.required">
+          *Title is required
+      </span>
           </div>
+          
         </div>
       </div>
       <div class="row">
@@ -15,17 +20,28 @@
           <div class="form-group">
             <label for="imagePath"> ImageUrl </label>
             <input type="text" formControlName="url" class="form-control" #img  >
+            <span class="text-danger"
+          *ngIf="formControl.url.touched && formControl.url.errors?.required">
+          *Image URL is required
+      </span>
+      <span class="text-danger"
+          *ngIf="formControl.url.dirty && (formControl.url.errors?.pattern || !imgValid)">
+          *Image URL is invalid
+      </span>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="formControl.url.value!=='' && !formControl.url.errors?.pattern">
         <div class="col-xs-12">
-          <img [src]="img.value" alt="" class="image-responsive">
+          <img [src]="img.value" alt="" class="image-responsive" (error)='OnError()' (load)="onLoad()"
+           OnError="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Error.svg/1200px-Error.svg.png'"
+          >
         </div>
       </div>
+      <hr>
       <div class="row">
         <div class="col-xs-12">
-          <button type="submit" class="btn btn-primary" [disabled]="!form.valid"
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid || !imgValid"
          > Save </button>
          <button class="btn btn-secondary" routerLink="../images"> Cancel </button>
         </div>

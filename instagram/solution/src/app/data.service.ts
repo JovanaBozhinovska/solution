@@ -10,7 +10,7 @@ export class DataService {
 
   constructor(private http : HttpClient, private imageService : ImageService) { }
 
-  storeRecipe()
+  storeImages()
   {
 
     this.http.get<Image[]>('http://jsonplaceholder.typicode.com/photos').subscribe

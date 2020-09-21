@@ -15,6 +15,9 @@ import { HeaderComponent } from './header/header.component';
 import { EditComponent } from './edit/edit.component';
 import { DialogComponent } from './dialog/dialog.component'
 import { MatDialogModule } from '@angular/material/dialog';
+import {  HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpErrorInterceptor } from './error.interceptor'
+
 
 @NgModule({
   declarations: [
@@ -24,18 +27,24 @@ import { MatDialogModule } from '@angular/material/dialog';
     ImageDetailsComponent,
     HeaderComponent,
     EditComponent,
-    DialogComponent
+    DialogComponent,
+    
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
     MatDialogModule,
-    FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  providers: [DataService, ImageService],
+  providers: [DataService, ImageService,
+    
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: HttpErrorInterceptor,
+        multi: true
+      }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

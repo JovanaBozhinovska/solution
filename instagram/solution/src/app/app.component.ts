@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   }
   ngOnInit()
   {
-    this.dataService.storeRecipe();
+    this.dataService.storeImages();
 
   }
 

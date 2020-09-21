@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Image } from './image.model'
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { DataService } from '../data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,10 @@ imgChanged = new Subject<Image[]>()
 imgSelected = new Subject<Image>();
 images : Image[]= [];
 
+constructor(private http : HttpClient)
+{
+
+}
  setImages (images : Image[])
  {
    this.images=images;
@@ -31,14 +37,19 @@ images : Image[]= [];
 
  add(title: string, url : string)
  {
-   const imgcopy= this.images;
-   this.images=[];
-   this.images[0]=new Image (1,1,title,url,url);
-   for (let i =0; i< imgcopy.length;i++)
-   this.images.push(imgcopy[i]);
+   
 
-   this.imgChanged.next(this.images)
-
+   //this.imgChanged.next(this.images)
+  
+   return this.http.post('https://jsonplaceholder.typicode.com/photos', {
+      title: title,
+      url : url,
+      thumbnailUrl : url
+    }
+    
+  )
+  
+  
  }
 
  delete(image : Image)
@@ -46,11 +57,15 @@ images : Image[]= [];
    var index= this.images.indexOf(image);
    if(index>-1)
    {
-     this.images.splice(index,1);
+    this.http.delete('https://jsonplaceholder.typicode.com/photos/'+index).subscribe(
+      (res)=>{console.log(res)
      console.log("deleteeed");
-   }
-   this.imgChanged.next(this.images)
+     this.images.splice(index,1);
+     this.imgChanged.next(this.images);
+    });
+    }
 
+  
  }
 
  getIdOfImage ( image : Image)
@@ -63,11 +78,16 @@ images : Image[]= [];
 
   }
 
-  edit (values, id : number)
+  edit (form_values, id : number)
   {
-    this.images[id].title=values["title"];
-    this.images[id].url=values['url'];
-    this.images[id].thumbnailUrl=values['url'];
-    this.imgChanged.next(this.images);
+  
+    return this.http.put('https://jsonplaceholder.typicode.com/photos/'+this.images[id].id,
+    {
+      title: form_values["title"],
+      url : form_values["url"],
+      thumbnailUrl : form_values["url"]
+    }
+    
+    )
   }
 }
